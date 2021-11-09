@@ -1,0 +1,16 @@
+$hyoo_meme_frame $mol_view
+	data?val *
+		back \about:blank
+		before \
+		inside \
+		after \
+	sub /
+		<= Back $mol_image
+			uri <= back \about:blank
+		<= Before $mol_textarea
+			value?val <=> before?val \
+		<= Inside $mol_textarea
+			value?val <=> inside?val \
+		<= After $mol_textarea
+			value?val <=> after?val \
+		<= Tools $mol_view sub <= tools /

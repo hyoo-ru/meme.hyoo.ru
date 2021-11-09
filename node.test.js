@@ -5074,7 +5074,7 @@ var $;
             },
             Before: {
                 top: 0,
-                backdropFilter: 'blur(30rem)',
+                backdropFilter: 'blur(30rem) contrast(5)',
             },
             Inside: {
                 top: per(50),
@@ -5082,7 +5082,7 @@ var $;
             },
             After: {
                 bottom: 0,
-                backdropFilter: 'blur(30rem)',
+                backdropFilter: 'blur(30rem) contrast(5)',
             },
         });
     })($$ = $.$$ || ($.$$ = {}));

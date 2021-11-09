@@ -69,6 +69,7 @@ namespace $.$$ {
 		
 		Before: {
 			top: 0,
+			backdropFilter: 'blur(.5rem)',
 		},
 		
 		Inside: {
@@ -78,6 +79,7 @@ namespace $.$$ {
 		
 		After: {
 			bottom: 0,
+			backdropFilter: 'blur(.5rem)',
 		},
 		
 	} )

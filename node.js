@@ -5029,7 +5029,7 @@ var $;
     var $$;
     (function ($$) {
         const { per, rem, vw } = $.$mol_style_unit;
-        const { clamp } = $.$mol_style_func;
+        const { clamp, hsla } = $.$mol_style_func;
         $.$mol_style_define($$.$hyoo_meme_frame, {
             position: 'relative',
             maxWidth: rem(40),
@@ -5037,9 +5037,8 @@ var $;
                 direction: 'column',
             },
             $mol_textarea: {
-                color: 'white',
                 background: 'none',
-                mixBlendMode: 'exclusion',
+                color: 'white',
                 border: {
                     radius: $.$mol_gap.round,
                 },
@@ -5051,16 +5050,15 @@ var $;
                 position: 'absolute',
                 width: per(100),
                 $mol_string: {
-                    background: 'none',
                     caretColor: 'white',
                     ':placeholder-shown': {
                         background: 'none',
                         boxShadow: 'none',
-                        backdropFilter: 'none',
-                        width: per(100),
                     },
                     ':focus': {
-                        background: 'none',
+                        background: {
+                            color: hsla(0, 0, 0, 0.25),
+                        },
                         box: {
                             shadow: 'none',
                         },
@@ -5082,15 +5080,27 @@ var $;
             },
             Before: {
                 top: 0,
-                backdropFilter: 'blur(30rem) contrast(5)',
+                Edit: {
+                    background: {
+                        color: hsla(0, 0, 0, 0.25),
+                    },
+                },
             },
             Inside: {
                 top: per(50),
                 transform: 'translateY(-50%)',
+                mixBlendMode: 'exclusion',
+                Edit: {
+                    background: 'none',
+                },
             },
             After: {
                 bottom: 0,
-                backdropFilter: 'blur(30rem) contrast(5)',
+                Edit: {
+                    background: {
+                        color: hsla(0, 0, 0, 0.25),
+                    },
+                },
             },
         });
     })($$ = $.$$ || ($.$$ = {}));

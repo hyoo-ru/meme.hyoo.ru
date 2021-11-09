@@ -4813,7 +4813,7 @@ var $;
             },
             Before: {
                 top: 0,
-                backdropFilter: 'blur(.5rem)',
+                backdropFilter: 'blur(30rem)',
             },
             Inside: {
                 top: per(50),
@@ -4821,7 +4821,7 @@ var $;
             },
             After: {
                 bottom: 0,
-                backdropFilter: 'blur(.5rem)',
+                backdropFilter: 'blur(30rem)',
             },
         });
     })($$ = $.$$ || ($.$$ = {}));

@@ -4773,6 +4773,7 @@ var $;
             flex: {
                 direction: 'column',
             },
+            background: 'none',
             $mol_textarea: {
                 background: 'none',
                 color: 'white',

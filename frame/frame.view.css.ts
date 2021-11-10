@@ -10,6 +10,7 @@ namespace $.$$ {
 		flex: {
 			direction: 'column',
 		},
+		background: 'none',
 		
 		$mol_textarea: {
 			

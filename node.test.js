@@ -5883,268 +5883,6 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    class $mol_icon_download extends $.$mol_icon {
-        path() {
-            return "M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z";
-        }
-    }
-    $.$mol_icon_download = $mol_icon_download;
-})($ || ($ = {}));
-//download.view.tree.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_button_download extends $.$mol_button_minor {
-        blob() {
-            return null;
-        }
-        uri() {
-            return "";
-        }
-        file_name() {
-            return "blob.bin";
-        }
-        sub() {
-            return [
-                this.Icon()
-            ];
-        }
-        Icon() {
-            const obj = new this.$.$mol_icon_download();
-            return obj;
-        }
-    }
-    __decorate([
-        $.$mol_mem
-    ], $mol_button_download.prototype, "Icon", null);
-    $.$mol_button_download = $mol_button_download;
-})($ || ($ = {}));
-//download.view.tree.js.map
-;
-"use strict";
-//deep.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    $.$mol_jsx_prefix = '';
-    $.$mol_jsx_booked = null;
-    $.$mol_jsx_document = {
-        getElementById: () => null,
-        createElementNS: (space, name) => $.$mol_dom_context.document.createElementNS(space, name),
-        createDocumentFragment: () => $.$mol_dom_context.document.createDocumentFragment(),
-    };
-    $.$mol_jsx_frag = '';
-    function $mol_jsx(Elem, props, ...childNodes) {
-        const id = props && props.id || '';
-        if (Elem && $.$mol_jsx_booked) {
-            if ($.$mol_jsx_booked.has(id)) {
-                $.$mol_fail(new Error(`JSX already has tag with id ${JSON.stringify(id)}`));
-            }
-            else {
-                $.$mol_jsx_booked.add(id);
-            }
-        }
-        const guid = $.$mol_jsx_prefix + id;
-        let node = guid ? $.$mol_jsx_document.getElementById(guid) : null;
-        if (typeof Elem !== 'string') {
-            if ('prototype' in Elem) {
-                const view = node && node[Elem] || new Elem;
-                Object.assign(view, props);
-                view[Symbol.toStringTag] = guid;
-                view.childNodes = childNodes;
-                if (!view.ownerDocument)
-                    view.ownerDocument = $.$mol_jsx_document;
-                node = view.valueOf();
-                node[Elem] = view;
-                return node;
-            }
-            else {
-                const prefix = $.$mol_jsx_prefix;
-                const booked = $.$mol_jsx_booked;
-                try {
-                    $.$mol_jsx_prefix = guid;
-                    $.$mol_jsx_booked = new Set;
-                    return Elem(props, ...childNodes);
-                }
-                finally {
-                    $.$mol_jsx_prefix = prefix;
-                    $.$mol_jsx_booked = booked;
-                }
-            }
-        }
-        if (!node) {
-            node = Elem
-                ? $.$mol_jsx_document.createElementNS(props?.xmlns ?? 'http://www.w3.org/1999/xhtml', Elem)
-                : $.$mol_jsx_document.createDocumentFragment();
-        }
-        $.$mol_dom_render_children(node, [].concat(...childNodes));
-        if (!Elem)
-            return node;
-        for (const key in props) {
-            if (typeof props[key] === 'string') {
-                ;
-                node.setAttribute(key, props[key]);
-            }
-            else if (props[key] &&
-                typeof props[key] === 'object' &&
-                Reflect.getPrototypeOf(props[key]) === Reflect.getPrototypeOf({})) {
-                if (typeof node[key] === 'object') {
-                    Object.assign(node[key], props[key]);
-                    continue;
-                }
-            }
-            else {
-                node[key] = props[key];
-            }
-        }
-        if (guid)
-            node.id = guid;
-        return node;
-    }
-    $.$mol_jsx = $mol_jsx;
-})($ || ($ = {}));
-//jsx.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    var $$;
-    (function ($$) {
-        class $mol_button_download extends $.$mol_button_download {
-            uri() {
-                return URL.createObjectURL(this.blob());
-            }
-            click() {
-                const a = $.$mol_jsx("a", { href: this.uri(), download: this.file_name() });
-                a.click();
-            }
-        }
-        __decorate([
-            $.$mol_mem
-        ], $mol_button_download.prototype, "uri", null);
-        $$.$mol_button_download = $mol_button_download;
-    })($$ = $.$$ || ($.$$ = {}));
-})($ || ($ = {}));
-//download.view.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_check extends $.$mol_button_minor {
-        attr() {
-            return {
-                ...super.attr(),
-                mol_check_checked: this.checked(),
-                "aria-checked": this.checked(),
-                role: "checkbox"
-            };
-        }
-        sub() {
-            return [
-                this.Icon(),
-                this.label()
-            ];
-        }
-        checked(val) {
-            if (val !== undefined)
-                return val;
-            return false;
-        }
-        Icon() {
-            return null;
-        }
-        title() {
-            return "";
-        }
-        Title() {
-            const obj = new this.$.$mol_view();
-            obj.sub = () => [
-                this.title()
-            ];
-            return obj;
-        }
-        label() {
-            return [
-                this.Title()
-            ];
-        }
-    }
-    __decorate([
-        $.$mol_mem
-    ], $mol_check.prototype, "checked", null);
-    __decorate([
-        $.$mol_mem
-    ], $mol_check.prototype, "Title", null);
-    $.$mol_check = $mol_check;
-})($ || ($ = {}));
-//check.view.tree.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    function $mol_maybe(value) {
-        return (value == null) ? [] : [value];
-    }
-    $.$mol_maybe = $mol_maybe;
-})($ || ($ = {}));
-//maybe.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    $.$mol_style_attach("mol/check/check.css", "[mol_check] {\n\tflex: 0 0 auto;\n\tjustify-content: flex-start;\n\talign-content: center;\n\talign-items: flex-start;\n\tborder: none;\n\tfont-weight: inherit;\n\tbox-shadow: none;\n\ttext-align: left;\n\tpadding: var(--mol_gap_text);\n\tdisplay: inline-flex;\n\tflex-wrap: nowrap;\n}\n");
-})($ || ($ = {}));
-//check.css.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    var $$;
-    (function ($$) {
-        class $mol_check extends $.$mol_check {
-            click(next) {
-                if (next?.defaultPrevented)
-                    return;
-                this.checked(!this.checked());
-                if (next)
-                    next.preventDefault();
-            }
-            sub() {
-                return [
-                    ...$.$mol_maybe(this.Icon()),
-                    ...this.label(),
-                ];
-            }
-            label() {
-                return this.title() ? super.label() : [];
-            }
-        }
-        $$.$mol_check = $mol_check;
-    })($$ = $.$$ || ($.$$ = {}));
-})($ || ($ = {}));
-//check.view.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_check_icon extends $.$mol_check {
-    }
-    $.$mol_check_icon = $mol_check_icon;
-})($ || ($ = {}));
-//icon.view.tree.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    $.$mol_style_attach("mol/check/icon/icon.view.css", "[mol_check_icon][mol_check_checked] {\n\tcolor: var(--mol_theme_focus);\n}\n");
-})($ || ($ = {}));
-//icon.view.css.js.map
-;
-"use strict";
-var $;
-(function ($) {
     const TextDecoder = globalThis.TextDecoder ?? $node.util.TextDecoder;
     function $mol_charset_decode(value, code = 'utf8') {
         return new TextDecoder(code).decode(value);
@@ -6561,6 +6299,268 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    class $mol_icon_download extends $.$mol_icon {
+        path() {
+            return "M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z";
+        }
+    }
+    $.$mol_icon_download = $mol_icon_download;
+})($ || ($ = {}));
+//download.view.tree.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_button_download extends $.$mol_button_minor {
+        blob() {
+            return null;
+        }
+        uri() {
+            return "";
+        }
+        file_name() {
+            return "blob.bin";
+        }
+        sub() {
+            return [
+                this.Icon()
+            ];
+        }
+        Icon() {
+            const obj = new this.$.$mol_icon_download();
+            return obj;
+        }
+    }
+    __decorate([
+        $.$mol_mem
+    ], $mol_button_download.prototype, "Icon", null);
+    $.$mol_button_download = $mol_button_download;
+})($ || ($ = {}));
+//download.view.tree.js.map
+;
+"use strict";
+//deep.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    $.$mol_jsx_prefix = '';
+    $.$mol_jsx_booked = null;
+    $.$mol_jsx_document = {
+        getElementById: () => null,
+        createElementNS: (space, name) => $.$mol_dom_context.document.createElementNS(space, name),
+        createDocumentFragment: () => $.$mol_dom_context.document.createDocumentFragment(),
+    };
+    $.$mol_jsx_frag = '';
+    function $mol_jsx(Elem, props, ...childNodes) {
+        const id = props && props.id || '';
+        if (Elem && $.$mol_jsx_booked) {
+            if ($.$mol_jsx_booked.has(id)) {
+                $.$mol_fail(new Error(`JSX already has tag with id ${JSON.stringify(id)}`));
+            }
+            else {
+                $.$mol_jsx_booked.add(id);
+            }
+        }
+        const guid = $.$mol_jsx_prefix + id;
+        let node = guid ? $.$mol_jsx_document.getElementById(guid) : null;
+        if (typeof Elem !== 'string') {
+            if ('prototype' in Elem) {
+                const view = node && node[Elem] || new Elem;
+                Object.assign(view, props);
+                view[Symbol.toStringTag] = guid;
+                view.childNodes = childNodes;
+                if (!view.ownerDocument)
+                    view.ownerDocument = $.$mol_jsx_document;
+                node = view.valueOf();
+                node[Elem] = view;
+                return node;
+            }
+            else {
+                const prefix = $.$mol_jsx_prefix;
+                const booked = $.$mol_jsx_booked;
+                try {
+                    $.$mol_jsx_prefix = guid;
+                    $.$mol_jsx_booked = new Set;
+                    return Elem(props, ...childNodes);
+                }
+                finally {
+                    $.$mol_jsx_prefix = prefix;
+                    $.$mol_jsx_booked = booked;
+                }
+            }
+        }
+        if (!node) {
+            node = Elem
+                ? $.$mol_jsx_document.createElementNS(props?.xmlns ?? 'http://www.w3.org/1999/xhtml', Elem)
+                : $.$mol_jsx_document.createDocumentFragment();
+        }
+        $.$mol_dom_render_children(node, [].concat(...childNodes));
+        if (!Elem)
+            return node;
+        for (const key in props) {
+            if (typeof props[key] === 'string') {
+                ;
+                node.setAttribute(key, props[key]);
+            }
+            else if (props[key] &&
+                typeof props[key] === 'object' &&
+                Reflect.getPrototypeOf(props[key]) === Reflect.getPrototypeOf({})) {
+                if (typeof node[key] === 'object') {
+                    Object.assign(node[key], props[key]);
+                    continue;
+                }
+            }
+            else {
+                node[key] = props[key];
+            }
+        }
+        if (guid)
+            node.id = guid;
+        return node;
+    }
+    $.$mol_jsx = $mol_jsx;
+})($ || ($ = {}));
+//jsx.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $mol_button_download extends $.$mol_button_download {
+            uri() {
+                return URL.createObjectURL(this.blob());
+            }
+            click() {
+                const a = $.$mol_jsx("a", { href: this.uri(), download: this.file_name() });
+                a.click();
+            }
+        }
+        __decorate([
+            $.$mol_mem
+        ], $mol_button_download.prototype, "uri", null);
+        $$.$mol_button_download = $mol_button_download;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+//download.view.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_check extends $.$mol_button_minor {
+        attr() {
+            return {
+                ...super.attr(),
+                mol_check_checked: this.checked(),
+                "aria-checked": this.checked(),
+                role: "checkbox"
+            };
+        }
+        sub() {
+            return [
+                this.Icon(),
+                this.label()
+            ];
+        }
+        checked(val) {
+            if (val !== undefined)
+                return val;
+            return false;
+        }
+        Icon() {
+            return null;
+        }
+        title() {
+            return "";
+        }
+        Title() {
+            const obj = new this.$.$mol_view();
+            obj.sub = () => [
+                this.title()
+            ];
+            return obj;
+        }
+        label() {
+            return [
+                this.Title()
+            ];
+        }
+    }
+    __decorate([
+        $.$mol_mem
+    ], $mol_check.prototype, "checked", null);
+    __decorate([
+        $.$mol_mem
+    ], $mol_check.prototype, "Title", null);
+    $.$mol_check = $mol_check;
+})($ || ($ = {}));
+//check.view.tree.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_maybe(value) {
+        return (value == null) ? [] : [value];
+    }
+    $.$mol_maybe = $mol_maybe;
+})($ || ($ = {}));
+//maybe.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    $.$mol_style_attach("mol/check/check.css", "[mol_check] {\n\tflex: 0 0 auto;\n\tjustify-content: flex-start;\n\talign-content: center;\n\talign-items: flex-start;\n\tborder: none;\n\tfont-weight: inherit;\n\tbox-shadow: none;\n\ttext-align: left;\n\tpadding: var(--mol_gap_text);\n\tdisplay: inline-flex;\n\tflex-wrap: nowrap;\n}\n");
+})($ || ($ = {}));
+//check.css.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $mol_check extends $.$mol_check {
+            click(next) {
+                if (next?.defaultPrevented)
+                    return;
+                this.checked(!this.checked());
+                if (next)
+                    next.preventDefault();
+            }
+            sub() {
+                return [
+                    ...$.$mol_maybe(this.Icon()),
+                    ...this.label(),
+                ];
+            }
+            label() {
+                return this.title() ? super.label() : [];
+            }
+        }
+        $$.$mol_check = $mol_check;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+//check.view.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_check_icon extends $.$mol_check {
+    }
+    $.$mol_check_icon = $mol_check_icon;
+})($ || ($ = {}));
+//icon.view.tree.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    $.$mol_style_attach("mol/check/icon/icon.view.css", "[mol_check_icon][mol_check_checked] {\n\tcolor: var(--mol_theme_focus);\n}\n");
+})($ || ($ = {}));
+//icon.view.css.js.map
+;
+"use strict";
+var $;
+(function ($) {
     class $mol_icon_brightness_6 extends $.$mol_icon {
         path() {
             return "M12,18V6C15.31,6 18,8.69 18,12C18,15.31 15.31,18 12,18M20,15.31L23.31,12L20,8.69V4H15.31L12,0.69L8.69,4H4V8.69L0.69,12L4,15.31V20H8.69L12,23.31L15.31,20H20V15.31Z";
@@ -6842,7 +6842,7 @@ var $;
 (function ($) {
     class $hyoo_meme extends $.$mol_page {
         title() {
-            return "Meme Generator";
+            return "$hyoo_meme";
         }
         data() {
             return [];
@@ -6883,6 +6883,7 @@ var $;
         Add() {
             const obj = new this.$.$mol_button_open();
             obj.files = (val) => this.add(val);
+            obj.hint = () => this.$.$mol_locale.text('$hyoo_meme_Add_hint');
             return obj;
         }
         file_name() {
@@ -6895,6 +6896,7 @@ var $;
             const obj = new this.$.$mol_button_download();
             obj.file_name = () => this.file_name();
             obj.uri = () => this.download_uri();
+            obj.hint = () => this.$.$mol_locale.text('$hyoo_meme_Download_hint');
             return obj;
         }
         Lights() {
@@ -10338,22 +10340,6 @@ var $;
 var $;
 (function ($) {
     $.$mol_test({
-        'all cases of using maybe'() {
-            $.$mol_assert_equal($.$mol_maybe(0)[0], 0);
-            $.$mol_assert_equal($.$mol_maybe(false)[0], false);
-            $.$mol_assert_equal($.$mol_maybe(null)[0], void 0);
-            $.$mol_assert_equal($.$mol_maybe(void 0)[0], void 0);
-            $.$mol_assert_equal($.$mol_maybe(void 0).map(v => v.toString())[0], void 0);
-            $.$mol_assert_equal($.$mol_maybe(0).map(v => v.toString())[0], '0');
-        },
-    });
-})($ || ($ = {}));
-//maybe.test.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    $.$mol_test({
         'decode utf8 string'() {
             const str = 'Hello, ΧΨΩЫ';
             const encoded = new Uint8Array([72, 101, 108, 108, 111, 44, 32, 206, 167, 206, 168, 206, 169, 208, 171]);
@@ -10398,6 +10384,22 @@ var $;
     });
 })($ || ($ = {}));
 //array.test.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    $.$mol_test({
+        'all cases of using maybe'() {
+            $.$mol_assert_equal($.$mol_maybe(0)[0], 0);
+            $.$mol_assert_equal($.$mol_maybe(false)[0], false);
+            $.$mol_assert_equal($.$mol_maybe(null)[0], void 0);
+            $.$mol_assert_equal($.$mol_maybe(void 0)[0], void 0);
+            $.$mol_assert_equal($.$mol_maybe(void 0).map(v => v.toString())[0], void 0);
+            $.$mol_assert_equal($.$mol_maybe(0).map(v => v.toString())[0], '0');
+        },
+    });
+})($ || ($ = {}));
+//maybe.test.js.map
 ;
 "use strict";
 var $;

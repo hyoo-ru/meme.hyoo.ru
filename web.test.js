@@ -2135,22 +2135,6 @@ var $;
 var $;
 (function ($) {
     $.$mol_test({
-        'all cases of using maybe'() {
-            $.$mol_assert_equal($.$mol_maybe(0)[0], 0);
-            $.$mol_assert_equal($.$mol_maybe(false)[0], false);
-            $.$mol_assert_equal($.$mol_maybe(null)[0], void 0);
-            $.$mol_assert_equal($.$mol_maybe(void 0)[0], void 0);
-            $.$mol_assert_equal($.$mol_maybe(void 0).map(v => v.toString())[0], void 0);
-            $.$mol_assert_equal($.$mol_maybe(0).map(v => v.toString())[0], '0');
-        },
-    });
-})($ || ($ = {}));
-//maybe.test.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    $.$mol_test({
         'decode utf8 string'() {
             const str = 'Hello, ΧΨΩЫ';
             const encoded = new Uint8Array([72, 101, 108, 108, 111, 44, 32, 206, 167, 206, 168, 206, 169, 208, 171]);
@@ -2177,6 +2161,22 @@ var $;
     });
 })($ || ($ = {}));
 //encode.test.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    $.$mol_test({
+        'all cases of using maybe'() {
+            $.$mol_assert_equal($.$mol_maybe(0)[0], 0);
+            $.$mol_assert_equal($.$mol_maybe(false)[0], false);
+            $.$mol_assert_equal($.$mol_maybe(null)[0], void 0);
+            $.$mol_assert_equal($.$mol_maybe(void 0)[0], void 0);
+            $.$mol_assert_equal($.$mol_maybe(void 0).map(v => v.toString())[0], void 0);
+            $.$mol_assert_equal($.$mol_maybe(0).map(v => v.toString())[0], '0');
+        },
+    });
+})($ || ($ = {}));
+//maybe.test.js.map
 ;
 "use strict";
 var $;

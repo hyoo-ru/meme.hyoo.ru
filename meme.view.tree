@@ -1,14 +1,16 @@
 $hyoo_meme $mol_page
-	title \Meme Generator
+	title \$hyoo_meme
 	data /
 	plugins /
 		<= Theme $mol_theme_auto
 	tools /
 		<= Add $mol_button_open
 			files?val <=> add?val /
+			hint @ \Add image
 		<= Download $mol_button_download
 			file_name <= file_name \meme.png
 			uri <= download_uri \
+			hint @ \Download meme
 		<= Lights $mol_lights_toggle
 		<= Source $mol_link_source
 			uri \https://github.com/hyoo-ru/meme.hyoo.ru/

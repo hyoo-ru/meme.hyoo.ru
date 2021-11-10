@@ -145,7 +145,7 @@ $mol_textarea $mol_view
 		<= Edit $mol_string
 			dom_name \textarea
 			value?val <=> value?val \
-			hint <= hint \
+			hint <= hint \ 
 			enabled <= enabled true
 			length_max <= length_max Infinity
 			selection?val <=> selection?val /number
@@ -165,6 +165,9 @@ $mol_image $mol_view
 		loading <= loading \lazy
 
 $hyoo_meme_frame $mol_view
+	attr *
+		^
+		mol_theme \$mol_theme_light
 	data?val *
 		back \about:blank
 		before \

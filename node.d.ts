@@ -1546,6 +1546,9 @@ declare namespace $ {
 
 declare namespace $ {
     class $hyoo_meme_frame extends $mol_view {
+        attr(): {
+            mol_theme: string;
+        };
         data(val?: any): {
             back: string;
             before: string;

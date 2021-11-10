@@ -4775,7 +4775,7 @@ var $;
             return "";
         }
         hint() {
-            return "";
+            return " ";
         }
         enabled() {
             return true;
@@ -4918,6 +4918,12 @@ var $;
 var $;
 (function ($) {
     class $hyoo_meme_frame extends $.$mol_view {
+        attr() {
+            return {
+                ...super.attr(),
+                mol_theme: "$mol_theme_light"
+            };
+        }
         data(val) {
             if (val !== undefined)
                 return val;
@@ -7088,7 +7094,7 @@ var $;
                         back: "https://camo.githubusercontent.com/857e0c82124edf3c2d6d72b8883ac7daaf4ccbbec075e3e91c1273959f66378c/68747470733a2f2f6e696e2d6a696e2e6769746875622e696f2f736c696465732f6d6f6c2f6275732d666163746f722e6a7067",
                         before: "Hype train            ",
                         inside: "Your   \nIdea   ",
-                        after: "                 Too $mol bus-factor",
+                        after: "                Too $mol bus-factor",
                     }
                 ];
             }

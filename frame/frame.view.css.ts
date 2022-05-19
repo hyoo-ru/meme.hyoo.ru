@@ -53,7 +53,7 @@ namespace $.$$ {
 			
 			position: 'absolute',
 			top: 0,
-			right: 0,
+			right: rem(-3.5),
 			flex: {
 				direction: 'column',
 			},

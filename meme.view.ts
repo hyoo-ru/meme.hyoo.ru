@@ -2,14 +2,16 @@ namespace $.$$ {
 	
 	type Frame_data = ReturnType< $hyoo_meme_frame['data'] >
 	
-	const load = $mol_fiber_sync( ( blob: Blob )=> new Promise< string >( ( done, fail )=> {
-		const reader = new FileReader
-		reader.onerror = fail
-		reader.onload = event => done( event.target!.result as string )
-		reader.readAsDataURL( blob )
-	} ) )
-	
 	export class $hyoo_meme extends $.$hyoo_meme {
+		
+		async load_file( blob: Blob ) {
+			return new Promise< string >( ( done, fail )=> {
+				const reader = new FileReader
+				reader.onerror = fail
+				reader.onload = event => done( event.target!.result as string )
+				reader.readAsDataURL( blob )
+			} )
+		}
 		
 		@ $mol_mem
 		data( next?: readonly Frame_data[] ) {
@@ -37,7 +39,7 @@ namespace $.$$ {
 			this.data([
 				... this.data(),
 				... [ ... files ].map( file => ({
-					back: load( file ),
+					back: $mol_wire_sync( this as $hyoo_meme ).load_file( file ),
 					before: '',
 					inside: '',
 					after: '',
@@ -72,16 +74,10 @@ namespace $.$$ {
 			return this.title() + '.png'
 		}
 		
+		@ $mol_action
 		download_uri() {
-			const capture = $mol_fiber_sync( $mol_dom_capture_canvas )
-			const app = new $hyoo_meme
-			app.data = ()=> this.data()
-			app.frame_tools = ()=> []
-			const node = app.Frames().dom_tree()
-			document.body.appendChild( node )
-			const canvas = capture( node )
-			document.body.removeChild( node )
-			app.destructor()
+			const node = this.Frames().dom_tree()
+			const canvas = $mol_wire_sync( this.$ ).$mol_dom_capture_canvas( node )
 			return canvas.toDataURL()
 		}
 		

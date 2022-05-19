@@ -1,7 +1,4 @@
 $hyoo_meme_frame $mol_view
-	attr *
-		^
-		mol_theme \$mol_theme_light
 	data?val *
 		back \about:blank
 		before \

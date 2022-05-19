@@ -1,16 +1,17 @@
 # MAM
 
-**M**am owns **A**gnostic **M**odules.
+**M**am owns language-**A**gnostic **M**odules.
 This is base **MAM** project.
 
 # Articles
 
 - [MAM: сборка фронтенда без боли](https://habhub.hyoo.ru/#!author=nin-jin/repo=HabHub/article=18)
+- [Step-by-step tutorial](https://github.com/hyoo-ru/HabHub/issues/4)
 
 # Features
 
 * **Agnostic modules.** Module is directory with mixed source files (JS, TS, CSS, JSON, HTML, Tree, images etc).
-* **Automatic dependency tracking.** You don't need import/export - simply use namespaced names in accordance to directory structure, like `$mol_http_resource` / `$jin.time.moment` in `*.JAM.JS`/`*.TS` or `--mol_skin_light` / `[mol_page_title]` / `.my-header-avatar` in `*.CSS`.
+* **Automatic dependency tracking.** You don't need import/export - simply use namespaced names in accordance to directory structure, like `$mol_http_resource` / `$jin.time.moment` in `*.JAM.JS`/`*.TS` or `--mol_theme_back` / `[mol_page_title]` / `.my-header-avatar` in `*.CSS`.
 * **Development server with automatic bundling on request**. Only if you use it then it will have bundled.
 * **Build any module as standalone bundle**. You can develope thousand of modules in one project.
 * **Cordova project generation**. Simply add `config.xml` to module and `-cordova` dir with cordova project will have generated.
@@ -41,35 +42,70 @@ fs.file-max=500000
 
 # Development server
 
-**Install node modules (~1m)**
+**Install node modules and build dev server from actual sources**
 
 ```sh
 npm install
 ```
 
-**Build dev server from sources and start that (first ~15s, second ~10s):**
+**Start dev server:**
 
 ```sh
 npm start
 ```
 
-**Open simple $mol based ToDoMVC application (first ~4s, second ~0.3s):**
+**Open simple $mol based ToDoMVC application:**
 
 ```sh
-start http://localhost:9080/mol/app/todomvc/
+start http://localhost:9080/hyoo/todomvc/-/test.html
 ```
 
-**Open $mol demos application (first ~11s, second ~0.5s):**
+# Manual build
+
+* Execute `npm start hyoo/todomvc` to build standalone ToDoMVC application at `hyoo/todomvc/-`.
+* Execute `npm start mol/regexp` to build standalone $mol_regexp library at `mol/regexp/-`.
+
+# NPM Integration
+
+## Publish to NPM
 
 ```sh
-start http://localhost:9080/mol/
+npm start mol/regexp
+npm publish mol/regexp/-
 ```
 
-# Manual building
+## Usage from NPM
 
-* Execute `npm start mol/app/todomvc` to build ToDoMVC application (~13s).
-* Execute `npm start mol` to build $mol demos application (~15s).
-* Execute `npm start lib/pdfjs` to build PDFJS library (~1s).
+### Import to CJS
+
+```js
+const { $mol_regexp: RE } = require( 'mol_regexp' )
+```
+
+### Import to ESM
+
+```js
+iport { $mol_regexp as RE } from 'mol_regexp'
+```
+
+### NodeJS dependencies
+
+Using `$node` namespace you can auto-install and dynamically lazy load any NPM packages:
+
+```js
+const isOdd = $node['is-odd']( '123' )
+```
+
+### Bundling NPM dependencies
+
+It's better to use implementations from MAM ecosystem. But you can bundle NPM packages too through adapter like:
+
+```ts
+// lib/ramda/ramda.ts
+namespace $ {
+	export let $lib_ramda = require('ramda/src/index.js') as typeof import('ramda')
+}
+```
 
 # Custom package
 

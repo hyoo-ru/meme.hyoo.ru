@@ -151,28 +151,52 @@ var $;
             const Button = (props, target) => {
                 return $mol_jsx("button", { title: props.hint }, target());
             };
-            const dom = $mol_jsx(Button, { id: "/foo", hint: "click me" }, () => 'hey!');
-            $mol_assert_equal(dom.outerHTML, '<button title="click me" id="/foo">hey!</button>');
+            const dom = $mol_jsx(Button, { id: "foo", hint: "click me" }, () => 'hey!');
+            $mol_assert_equal(dom.outerHTML, '<button title="click me" id="foo" class="Button">hey!</button>');
         },
         'Nested guid generation'() {
             const Foo = () => {
                 return $mol_jsx("div", null,
-                    $mol_jsx(Bar, { id: "/bar" },
-                        $mol_jsx("img", { id: "/icon" })));
+                    $mol_jsx(Bar, { id: "bar" },
+                        $mol_jsx("img", { id: "icon" })));
             };
             const Bar = (props, icon) => {
-                return $mol_jsx("span", null, icon);
+                return $mol_jsx("span", null,
+                    icon,
+                    $mol_jsx("i", { id: "label" }));
             };
-            const dom = $mol_jsx(Foo, { id: "/foo" });
-            $mol_assert_equal(dom.outerHTML, '<div id="/foo"><span id="/foo/bar"><img id="/foo/icon"></span></div>');
+            const dom = $mol_jsx(Foo, { id: "foo" });
+            $mol_assert_equal(dom.outerHTML, '<div id="foo" class="Foo"><span id="foo/bar" class="Foo_bar Bar"><img id="foo/icon" class="Foo_icon"><i id="foo/bar/label" class="Foo_bar_label Bar_label"></i></span></div>');
         },
         'Fail on non unique ids'() {
             const App = () => {
                 return $mol_jsx("div", null,
-                    $mol_jsx("span", { id: "/bar" }),
-                    $mol_jsx("span", { id: "/bar" }));
+                    $mol_jsx("span", { id: "bar" }),
+                    $mol_jsx("span", { id: "bar" }));
             };
-            $mol_assert_fail(() => $mol_jsx(App, { id: "/foo" }), 'JSX already has tag with id "/bar"');
+            $mol_assert_fail(() => $mol_jsx(App, { id: "foo" }), 'JSX already has tag with id "foo/bar"');
+        },
+        'Owner based guid generationn'() {
+            const Foo = () => {
+                return $mol_jsx("div", null,
+                    $mol_jsx(Bar, { id: "middle", icon: () => $mol_jsx("img", { id: "icon" }) }));
+            };
+            const Bar = (props) => {
+                return $mol_jsx("span", null, props.icon());
+            };
+            const dom = $mol_jsx(Foo, { id: "app" });
+            $mol_assert_equal(dom.outerHTML, '<div id="app" class="Foo"><span id="app/middle" class="Foo_middle Bar"><img id="app/icon" class="Foo_icon"></span></div>');
+        },
+        'Fail on same ids from different caller'() {
+            const Foo = () => {
+                return $mol_jsx("div", null,
+                    $mol_jsx("img", { id: "icon" }),
+                    $mol_jsx(Bar, { id: "bar", icon: () => $mol_jsx("img", { id: "icon" }) }));
+            };
+            const Bar = (props) => {
+                return $mol_jsx("span", null, props.icon());
+            };
+            $mol_assert_fail(() => $mol_jsx(Foo, { id: "foo" }), 'JSX already has tag with id "foo/icon"');
         },
     });
 })($ || ($ = {}));
@@ -401,6 +425,20 @@ var $;
 ;
 "use strict";
 var $;
+(function ($_1) {
+    $mol_test({
+        'FQN of anon function'($) {
+            const $$ = Object.assign($, { $mol_func_name_test: (() => () => { })() });
+            $mol_assert_equal($$.$mol_func_name_test.name, '');
+            $mol_assert_equal($$.$mol_func_name($$.$mol_func_name_test), '$mol_func_name_test');
+            $mol_assert_equal($$.$mol_func_name_test.name, '$mol_func_name_test');
+        },
+    });
+})($ || ($ = {}));
+//mol/func/name/name.test.ts
+;
+"use strict";
+var $;
 (function ($) {
     $mol_test({
         'get'() {
@@ -586,33 +624,6 @@ var $;
 var $;
 (function ($_1) {
     $mol_test({
-        async 'Latest Calls Wins on Concurrency'($) {
-            class NameLogger extends $mol_object2 {
-                static $ = $;
-                static first = [];
-                static last = [];
-                static send(next) {
-                    $mol_wire_sync(this.first).push(next);
-                    this.$.$mol_wait_timeout(0);
-                    this.last.push(next);
-                }
-            }
-            const name = $mol_wire_async(NameLogger).send;
-            name('john');
-            const promise = name('jin');
-            $.$mol_after_mock_warp();
-            await promise;
-            $mol_assert_like(NameLogger.first, ['john', 'jin']);
-            $mol_assert_like(NameLogger.last, ['jin']);
-        },
-    });
-})($ || ($ = {}));
-//mol/wire/async/async.test.ts
-;
-"use strict";
-var $;
-(function ($_1) {
-    $mol_test({
         'Collect deps'() {
             const pub1 = new $mol_wire_pub;
             const pub2 = new $mol_wire_pub;
@@ -771,6 +782,49 @@ var $;
 var $;
 (function ($_1) {
     $mol_test({
+        async 'Latest method calls wins'($) {
+            class NameLogger extends $mol_object2 {
+                static $ = $;
+                static first = [];
+                static last = [];
+                static send(next) {
+                    $mol_wire_sync(this.first).push(next);
+                    this.$.$mol_wait_timeout(0);
+                    this.last.push(next);
+                }
+            }
+            const name = $mol_wire_async(NameLogger).send;
+            name('john');
+            const promise = name('jin');
+            $.$mol_after_mock_warp();
+            await promise;
+            $mol_assert_like(NameLogger.first, ['john', 'jin']);
+            $mol_assert_like(NameLogger.last, ['jin']);
+        },
+        async 'Latest function calls wins'($) {
+            const first = [];
+            const last = [];
+            function send_name(next) {
+                $mol_wire_sync(first).push(next);
+                $.$mol_wait_timeout(0);
+                last.push(next);
+            }
+            const name = $mol_wire_async(send_name);
+            name('john');
+            const promise = name('jin');
+            $.$mol_after_mock_warp();
+            await promise;
+            $mol_assert_like(first, ['john', 'jin']);
+            $mol_assert_like(last, ['jin']);
+        },
+    });
+})($ || ($ = {}));
+//mol/wire/async/async.test.ts
+;
+"use strict";
+var $;
+(function ($_1) {
+    $mol_test({
         'Cached channel'($) {
             class App extends $mol_object2 {
                 static $ = $;
@@ -784,6 +838,19 @@ var $;
             $mol_assert_equal(App.value(), 2);
             App.value(2);
             $mol_assert_equal(App.value(), 3);
+        },
+        'Read Pushed'($) {
+            class App extends $mol_object2 {
+                static $ = $;
+                static value(next = 0) {
+                    return next;
+                }
+            }
+            __decorate([
+                $mol_wire_mem(0)
+            ], App, "value", null);
+            $mol_assert_equal(App.value(1), 1);
+            $mol_assert_equal(App.value(), 1);
         },
         'Mem overrides mem'($) {
             class Base extends $mol_object2 {
@@ -965,6 +1032,8 @@ var $;
                     return this.store(next);
                 }
                 static slow(next) {
+                    if (next !== undefined)
+                        this.slow();
                     return this.store(next);
                 }
             }
@@ -1503,33 +1572,6 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    $mol_test({
-        'const returns stored value'() {
-            const foo = { bar: $mol_const(Math.random()) };
-            $mol_assert_equal(foo.bar(), foo.bar());
-            $mol_assert_equal(foo.bar(), foo.bar['()']);
-        },
-    });
-})($ || ($ = {}));
-//mol/const/const.test.ts
-;
-"use strict";
-var $;
-(function ($_1) {
-    $mol_test({
-        'FQN of anon function'($) {
-            const $$ = Object.assign($, { $mol_func_name_test: (() => () => { })() });
-            $mol_assert_equal($$.$mol_func_name_test.name, '');
-            $mol_assert_equal($$.$mol_func_name($$.$mol_func_name_test), '$mol_func_name_test');
-            $mol_assert_equal($$.$mol_func_name_test.name, '$mol_func_name_test');
-        },
-    });
-})($ || ($ = {}));
-//mol/func/name/name.test.ts
-;
-"use strict";
-var $;
-(function ($) {
     class $mol_wire_log extends $mol_object2 {
         static watch(task) {
             return task;
@@ -1642,6 +1684,19 @@ var $;
     $mol_wire_log.active();
 })($ || ($ = {}));
 //mol/wire/atom/atom.test.ts
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_test({
+        'const returns stored value'() {
+            const foo = { bar: $mol_const(Math.random()) };
+            $mol_assert_equal(foo.bar(), foo.bar());
+            $mol_assert_equal(foo.bar(), foo.bar['()']);
+        },
+    });
+})($ || ($ = {}));
+//mol/const/const.test.ts
 ;
 "use strict";
 var $;
@@ -1908,7 +1963,7 @@ var $;
                     },
                 },
             });
-            $mol_assert_equal(sheet, '[mol_style_sheet_test][mol_theme="$mol_theme_dark"] {\n\tcolor: red;\n\tdisplay: block;\n}\n');
+            $mol_assert_equal(sheet, '[mol_style_sheet_test]:where([mol_theme="$mol_theme_dark"]) {\n\tcolor: red;\n\tdisplay: block;\n}\n');
         },
         'component element styles'() {
             class $mol_style_sheet_test extends $mol_view {
@@ -1953,7 +2008,7 @@ var $;
                     },
                 },
             });
-            $mol_assert_equal(sheet, '[mol_style_sheet_test][mol_theme="$mol_theme_dark"] [mol_style_sheet_test_item] {\n\tcolor: red;\n}\n');
+            $mol_assert_equal(sheet, '[mol_style_sheet_test]:where([mol_theme="$mol_theme_dark"]) :where([mol_style_sheet_test_item]) {\n\tcolor: red;\n}\n');
         },
         'inner component styles by class'() {
             const sheet = $mol_style_sheet($mol_style_sheet_test2, {
@@ -1962,7 +2017,7 @@ var $;
                     display: 'block',
                 },
             });
-            $mol_assert_equal(sheet, '[mol_style_sheet_test2] [mol_style_sheet_test1] {\n\tcolor: red;\n\tdisplay: block;\n}\n');
+            $mol_assert_equal(sheet, '[mol_style_sheet_test2] :where([mol_style_sheet_test1]) {\n\tcolor: red;\n\tdisplay: block;\n}\n');
         },
         'child component styles by class'() {
             const sheet = $mol_style_sheet($mol_style_sheet_test2, {
@@ -1973,7 +2028,7 @@ var $;
                     },
                 },
             });
-            $mol_assert_equal(sheet, '[mol_style_sheet_test2] > [mol_style_sheet_test1] {\n\tcolor: red;\n\tdisplay: block;\n}\n');
+            $mol_assert_equal(sheet, '[mol_style_sheet_test2] > :where([mol_style_sheet_test1]) {\n\tcolor: red;\n\tdisplay: block;\n}\n');
         },
     });
 })($ || ($ = {}));
@@ -2174,30 +2229,6 @@ var $;
     })($$ = $_1.$$ || ($_1.$$ = {}));
 })($ || ($ = {}));
 //mol/view/tree/test/tree.test.ts
-;
-"use strict";
-var $;
-(function ($) {
-    function $mol_deprecated(message) {
-        return (host, field, descr) => {
-            const value = descr.value;
-            let warned = false;
-            descr.value = function $mol_deprecated_wrapper(...args) {
-                if (!warned) {
-                    $$.$mol_log3_warn({
-                        place: `${host.constructor.name}::${field}`,
-                        message: `Deprecated`,
-                        hint: message,
-                    });
-                    warned = true;
-                }
-                return value.call(this, ...args);
-            };
-        };
-    }
-    $.$mol_deprecated = $mol_deprecated;
-})($ || ($ = {}));
-//mol/deprecated/deprecated.ts
 ;
 "use strict";
 var $;
@@ -2585,9 +2616,6 @@ var $;
             return new Error(`${message}:\n${this} ${this.baseUri}:${this.row}:${this.col}`);
         }
     }
-    __decorate([
-        $mol_deprecated('Use $mol_tree:hack')
-    ], $mol_tree.prototype, "transform", null);
     $.$mol_tree = $mol_tree;
 })($ || ($ = {}));
 //mol/tree/tree.ts
@@ -3343,7 +3371,7 @@ var $;
                 });
                 const event = $mol_dom_context.document.createEvent('mouseevent');
                 $mol_assert_fail(() => clicker.event_activate(event), 'Test error');
-                $mol_assert_fail(() => clicker.status(), 'Test error');
+                $mol_assert_equal(clicker.status()[0].message, 'Test error');
             },
         });
     })($$ = $_1.$$ || ($_1.$$ = {}));

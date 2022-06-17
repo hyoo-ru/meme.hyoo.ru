@@ -28,16 +28,7 @@ $mol_page $mol_view
 			dom_name \footer
 			sub <= foot /$mol_view
 
-$mol_list $mol_view
-	render_visible_only true
-	render_over 0
-	sub <= rows /$mol_view
-	Empty $mol_view
-	Gap_before $mol_view style * paddingTop <= gap_before 0
-	Gap_after $mol_view style * paddingTop <= gap_after 0
-	view_window /
-		0
-		0
+$mol_stack $mol_view
 
 $mol_paragraph $mol_view
 	line_height 24
@@ -83,18 +74,109 @@ $mol_text_code_row $mol_paragraph
 	Token_link* $mol_text_code_token_link
 		haystack <= token_text* \
 		needle <= highlight \
+	find_pos* null
 
-$mol_text_code $mol_list
+$mol_list $mol_view
+	render_visible_only true
+	render_over 0
+	sub <= rows /$mol_view
+	Empty $mol_view
+	Gap_before $mol_view style * paddingTop <= gap_before 0
+	Gap_after $mol_view style * paddingTop <= gap_after 0
+	view_window /
+		0
+		0
+
+$mol_speck $mol_view
+	attr *
+		^
+		mol_theme \$mol_theme_accent
+	style *
+		^
+		minHeight \1em
+	sub /
+		<= value null
+
+$mol_button $mol_view
+	enabled true
+	click?event null
+	event_click?event null
+	event *
+		^
+		click?event <=> event_activate?event null
+		keydown?event <=> event_key_press?event null 
+	attr *
+		^
+		disabled <= disabled false
+		role \button
+		tabindex <= tab_index 0
+		title <= hint \
+	sub /$mol_view_content
+		<= title
+	Speck $mol_speck
+		value <= error \
+
+$mol_button_typed $mol_button
+	minimal_height 40
+	minimal_width 40
+
+$mol_svg $mol_view
+	dom_name \svg
+	dom_name_space \http://www.w3.org/2000/svg
+	font_size 16
+	font_family \
+	style_size *
+
+$mol_svg_root $mol_svg
+	dom_name \svg
+	attr *
+		^
+		viewBox <= view_box \0 0 100 100
+		preserveAspectRatio <= aspect \xMidYMid
+
+$mol_svg_path $mol_svg
+	dom_name \path
+	attr *
+		^
+		d <= geometry \
+
+
+$mol_icon $mol_svg_root
+	view_box \0 0 24 24
+	minimal_width 16
+	minimal_height 16
+	sub /
+		<= Path $mol_svg_path
+			geometry <= path \
+
+$mol_button_minor $mol_button_typed
+
+$mol_icon_content_copy $mol_icon path \M19,21H8V7H19M19,5H8C6.9,5 6,5.9 6,7V21C6,22.1 6.9,23 8,23H19C20.1,23 21,22.1 21,21V7C21,5.9 20.1,5 19,5M16,1H4C2.9,1 2,1.9 2,3V17H4V3H16V1Z
+
+$mol_button_copy $mol_button_minor
+	text \
+	sub /
+		<= Icon $mol_icon_content_copy
+
+$mol_text_code $mol_stack
 	attr *
 		^
 		mol_text_code_sidebar_showed <= sidebar_showed false
 	text \
 	text_lines /string
-	Row* $mol_text_code_row
-		numb_showed <= sidebar_showed
-		numb <= row_numb* 0
-		text <= row_text* \
-		highlight <= highlight \
+	find_pos* null
+	sub /
+		<= Rows $mol_list
+			render_visible_only <= render_visible_only false
+			rows <= rows /
+				<= Row*0 $mol_text_code_row
+					numb_showed <= sidebar_showed
+					numb <= row_numb* 0
+					text <= row_text* \
+					highlight <= highlight \
+		<= Copy $mol_button_copy
+			hint @ \Copy whole code
+			text <= text
 
 $mol_hotkey $mol_plugin
 	event *
@@ -138,70 +220,6 @@ $mol_float $mol_view
 	style *
 		^
 		minHeight \auto
-
-$mol_speck $mol_view
-	attr *
-		^
-		mol_theme \$mol_theme_accent
-	style *
-		^
-		minHeight \1em
-	sub /
-		<= value null
-
-$mol_button $mol_view
-	enabled true
-	minimal_height 40
-	minimal_width 40
-	click?event null
-	event_click?event null
-	event *
-		^
-		click?event <=> event_activate?event null
-		keydown?event <=> event_key_press?event null 
-	attr *
-		^
-		disabled <= disabled false
-		role \button
-		tabindex <= tab_index 0
-		title <= hint \
-	sub /$mol_view_content
-		<= title
-	Speck $mol_speck
-		value <= error \
-
-$mol_button_typed $mol_button
-
-$mol_svg $mol_view
-	dom_name \svg
-	dom_name_space \http://www.w3.org/2000/svg
-	font_size 16
-	font_family \
-	style_size *
-
-$mol_svg_root $mol_svg
-	dom_name \svg
-	attr *
-		^
-		viewBox <= view_box \0 0 100 100
-		preserveAspectRatio <= aspect \xMidYMid
-
-$mol_svg_path $mol_svg
-	dom_name \path
-	attr *
-		^
-		d <= geometry \
-
-
-$mol_icon $mol_svg_root
-	view_box \0 0 24 24
-	minimal_width 16
-	minimal_height 16
-	sub /
-		<= Path $mol_svg_path
-			geometry <= path \
-
-$mol_button_minor $mol_button_typed
 
 $mol_check $mol_button_minor
 	attr *
@@ -321,24 +339,35 @@ $mol_embed_native $mol_scroll
 		data <= uri?val \
 		type <= mime \
 	sub /
-		<= Fallback $mol_link
+		<= Fallback_link $mol_link
 			uri <= uri
-			title <= title?val \
+			sub /
+				<= Fallback_image $mol_image
+					uri <= uri
+					title <= title?val \
 
 $mol_text $mol_list
 	uri_base \
 	text \
+	param \
 	flow_tokens /
+	auto /
+		<= auto_scroll null
 	- \Blocks
 	Paragraph* $mol_paragraph
 		sub <= block_content* /
 	Quote* $mol_text
+		uri_resolve* <= uri_resolve* null
 		text <= quote_text* \
+		auto_scroll null
 	List* $mol_text
+		uri_resolve* <= uri_resolve* null
 		text <= list_text* \
-	Header* $mol_paragraph
+		auto_scroll null
+	Header* $mol_text_header
 		dom_name <= header_level* \h
-		sub <= block_content* /
+		content <= block_content* /
+		arg <= header_arg* *
 	Code* $mol_text_code
 		text <= code_text* \
 		highlight <= highlight \
@@ -350,6 +379,8 @@ $mol_text $mol_list
 	Table_row* $mol_grid_row
 		cells <= table_cells* /
 	Table_cell* $mol_text
+		auto_scroll null
+		uri_resolve* <= uri_resolve* null
 		text <= table_cell_text* \
 	- \Lines
 	String* $mol_dimmer
@@ -372,7 +403,14 @@ $mol_text $mol_list
 		content / <= String*
 	Image* $mol_embed_native
 		uri <= link_uri* \
-		sub <= line_content* /
+		title <= line_text* \
+
+$mol_text_header $mol_paragraph
+	sub /
+		<= Link $mol_link
+			arg <= arg *
+			hint @ \Permalink to this section
+			sub <= content /
 
 $mol_text_span $mol_paragraph
 	dom_name \span
@@ -380,7 +418,7 @@ $mol_text_span $mol_paragraph
 		^
 		mol_text_type <= type \
 
-$mol_textarea $mol_view
+$mol_textarea $mol_stack
 	attr *
 		^
 		mol_textarea_clickable <= clickable?val false

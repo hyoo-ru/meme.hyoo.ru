@@ -16,9 +16,6 @@ namespace $.$$ {
 			
 			background: 'none',
 			color: 'white',
-			border: {
-				radius: $mol_gap.round,
-			},
 			font: {
 				weight: 'bolder',
 				size: clamp( rem(0), vw(4), rem(2) ),

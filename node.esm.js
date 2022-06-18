@@ -8641,12 +8641,12 @@ var $;
                 this.frame_data(index, null);
             }
             file_name() {
-                return this.title() + '.png';
+                return this.title() + '.jpg';
             }
             download_uri() {
                 const node = this.Frames().dom_tree();
                 const canvas = $mol_wire_sync(this.$).$mol_dom_capture_canvas(node);
-                return canvas.toDataURL();
+                return canvas.toDataURL('image/jpeg');
             }
         }
         __decorate([

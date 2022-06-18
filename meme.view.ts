@@ -71,14 +71,14 @@ namespace $.$$ {
 		
 		@ $mol_mem
 		file_name() {
-			return this.title() + '.png'
+			return this.title() + '.jpg'
 		}
 		
 		@ $mol_action
 		download_uri() {
 			const node = this.Frames().dom_tree()
 			const canvas = $mol_wire_sync( this.$ ).$mol_dom_capture_canvas( node )
-			return canvas.toDataURL()
+			return canvas.toDataURL( 'image/jpeg' )
 		}
 		
 	}

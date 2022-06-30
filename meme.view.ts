@@ -17,7 +17,7 @@ namespace $.$$ {
 		data( next?: readonly Frame_data[] ) {
 			return this.$.$mol_state_local.value( 'draft', next ) ?? [
 				{
-					back: "https://camo.githubusercontent.com/857e0c82124edf3c2d6d72b8883ac7daaf4ccbbec075e3e91c1273959f66378c/68747470733a2f2f6e696e2d6a696e2e6769746875622e696f2f736c696465732f6d6f6c2f6275732d666163746f722e6a7067",
+					back: "hyoo/meme/gallery/bus.jfif",
 					before: "Hype train            ",
 					inside: "Your   \nIdea   ",
 					after: "                Too $mol bus-factor",

@@ -1,3 +1,4 @@
 include \/mol/offline/install
 
 deploy \/hyoo/meme/logo/logo.svg
+deploy \/hyoo/meme/gallery/bus.jfif

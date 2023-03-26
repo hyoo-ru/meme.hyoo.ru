@@ -9,8 +9,11 @@ $hyoo_meme $mol_page
 			hint @ \Add image
 		<= Download $mol_button_download
 			file_name <= file_name \meme.png
-			uri <= download_uri \
+			blob <= export_jpg $mol_blob
 			hint @ \Download meme
+		<= Copy $mol_button_copy
+			blobs / <= export_png $mol_blob
+			hint @ \Copy meme
 		<= Lights $mol_lights_toggle
 		<= Source $mol_link_source
 			uri \https://github.com/hyoo-ru/meme.hyoo.ru/

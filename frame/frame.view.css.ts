@@ -6,7 +6,7 @@ namespace $.$$ {
 	$mol_style_define( $hyoo_meme_frame, {
 		
 		position: 'relative',
-		maxWidth: rem(40),
+		maxWidth: rem(50),
 		flex: {
 			direction: 'column',
 		},
@@ -14,7 +14,7 @@ namespace $.$$ {
 		
 		$mol_textarea: {
 			
-			background: 'none',
+			textShadow: '0 0 0.25rem black',
 			color: 'white',
 			font: {
 				weight: 'bolder',
@@ -27,6 +27,10 @@ namespace $.$$ {
 			$mol_string: {
 				
 				caretColor: 'white',
+				background: 'none',
+				box: {
+					shadow: 'none',
+				},
 				
 				':placeholder-shown': {
 					background: 'none',
@@ -42,7 +46,12 @@ namespace $.$$ {
 					},
 				},
 				
-			}
+			},
+			
+			$mol_text_code: {
+				justifySelf: 'stretch',
+				justifyItems: 'center',
+			},
 			
 		},
 		
@@ -65,29 +74,15 @@ namespace $.$$ {
 		
 		Before: {
 			top: 0,
-			Edit: {
-				background: {
-					color: hsla( 0, 0, 0, 0.25 ),
-				},
-			},
 		},
 		
 		Inside: {
 			top: per(50),
 			transform: 'translateY(-50%)',
-			mixBlendMode: 'exclusion',
-			Edit: {
-				background: 'none',
-			},
 		},
 		
 		After: {
 			bottom: 0,
-			Edit: {
-				background: {
-					color: hsla( 0, 0, 0, 0.25 ),
-				},
-			},
 		},
 		
 	} )

@@ -75,10 +75,20 @@ namespace $.$$ {
 		}
 		
 		@ $mol_action
-		download_uri() {
+		picture() {
 			const node = this.Frames().dom_tree()
-			const canvas = $mol_wire_sync( this.$ ).$mol_dom_capture_canvas( node )
-			return canvas.toDataURL( 'image/jpeg' )
+			const img = $mol_wire_sync( this.$ ).$mol_dom_capture_image( node )
+			return $mol_picture.fit( img )
+		}
+		
+		@ $mol_action
+		export_jpg() {
+			return this.picture().format( 'image/jpeg' )!
+		}
+		
+		@ $mol_action
+		export_png() {
+			return this.picture().format( 'image/png' )!
 		}
 		
 	}

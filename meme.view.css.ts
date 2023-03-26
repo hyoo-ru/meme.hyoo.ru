@@ -2,6 +2,10 @@ namespace $.$$ {
 	
 	$mol_style_define( $hyoo_meme, {
 		
+		Body: {
+			padding: 0,
+		},
+		
 		Frames: {
 			alignSelf: 'center',
 			padding: $mol_gap.block,

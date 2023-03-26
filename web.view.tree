@@ -10,6 +10,9 @@ $mol_scroll $mol_view
 
 $mol_page $mol_view
 	dom_name \article
+	field *
+		^
+		tabIndex <= tabindex -1
 	sub /
 		<= Head $mol_view
 			minimal_height 64
@@ -17,7 +20,8 @@ $mol_page $mol_view
 			sub <= head /
 				<= Title $mol_view
 					dom_name \h1
-					sub /
+					sub <= title_content /
+						<= Logo null
 						<= title
 				<= Tools $mol_view
 					sub <= tools /$mol_view_content
@@ -28,12 +32,25 @@ $mol_page $mol_view
 			dom_name \footer
 			sub <= foot /$mol_view
 
+$mol_image $mol_view
+	dom_name \img
+	field *
+		^
+		src <= uri \
+		alt <= title
+		loading <= loading \eager
+		decoding <= decoding \async
+		crossOrigin <= cors null
+	minimal_width 16
+	minimal_height 16
+
 $mol_stack $mol_view
 
 $mol_paragraph $mol_view
 	line_height 24
 	letter_width 7
-	width_limit Infinity
+	width_limit +Infinity
+	row_width 0
 	sub / <= title
 
 $mol_dimmer $mol_paragraph
@@ -57,13 +74,15 @@ $mol_text_code_token_link $mol_text_code_token
 	type \code-link
 	attr *
 		^
-		href <= haystack \
+		href <= uri \
 		target \_blank
 
 $mol_text_code_row $mol_paragraph
 	text \
 	minimal_height 24
 	numb_showed true
+	syntax null
+	uri_resolve* \
 	Numb $mol_view
 		sub /
 			<= numb 0
@@ -74,6 +93,7 @@ $mol_text_code_row $mol_paragraph
 	Token_link* $mol_text_code_token_link
 		haystack <= token_text* \
 		needle <= highlight \
+		uri <= token_uri* \
 	find_pos* null
 
 $mol_list $mol_view
@@ -90,7 +110,7 @@ $mol_list $mol_view
 $mol_speck $mol_view
 	attr *
 		^
-		mol_theme \$mol_theme_accent
+		mol_theme <= theme \$mol_theme_accent
 	style *
 		^
 		minHeight \1em
@@ -104,13 +124,14 @@ $mol_button $mol_view
 	event *
 		^
 		click?event <=> event_activate?event null
+		dblclick?event <=> clicks?event null
 		keydown?event <=> event_key_press?event null 
 	attr *
 		^
 		disabled <= disabled false
 		role \button
 		tabindex <= tab_index 0
-		title <= hint \
+		title <= hint_safe <= hint \
 	sub /$mol_view_content
 		<= title
 	Speck $mol_speck
@@ -119,6 +140,8 @@ $mol_button $mol_view
 $mol_button_typed $mol_button
 	minimal_height 40
 	minimal_width 40
+
+$mol_button_minor $mol_button_typed
 
 $mol_svg $mol_view
 	dom_name \svg
@@ -149,14 +172,23 @@ $mol_icon $mol_svg_root
 		<= Path $mol_svg_path
 			geometry <= path \
 
-$mol_button_minor $mol_button_typed
+$mol_icon_clipboard $mol_icon path \M19,3H14.82C14.4,1.84 13.3,1 12,1C10.7,1 9.6,1.84 9.18,3H5C3.9,3 3,3.9 3,5V19C3,20.1 3.9,21 5,21H19C20.1,21 21,20.1 21,19V5C21,3.9 20.1,3 19,3M12,3C12.55,3 13,3.45 13,4C13,4.55 12.55,5 12,5C11.45,5 11,4.55 11,4C11,3.45 11.45,3 12,3
 
-$mol_icon_content_copy $mol_icon path \M19,21H8V7H19M19,5H8C6.9,5 6,5.9 6,7V21C6,22.1 6.9,23 8,23H19C20.1,23 21,22.1 21,21V7C21,5.9 20.1,5 19,5M16,1H4C2.9,1 2,1.9 2,3V17H4V3H16V1Z
+$mol_icon_clipboard_outline $mol_icon path \M19,3H14.82C14.4,1.84 13.3,1 12,1C10.7,1 9.6,1.84 9.18,3H5C3.9,3 3,3.9 3,5V19C3,20.1 3.9,21 5,21H19C20.1,21 21,20.1 21,19V5C21,3.9 20.1,3 19,3M12,3C12.55,3 13,3.45 13,4C13,4.55 12.55,5 12,5C11.45,5 11,4.55 11,4C11,3.45 11.45,3 12,3M7,7H17V5H19V19H5V5H7V7Z
 
 $mol_button_copy $mol_button_minor
-	text \
+	blobs /$mol_blob
+		<= text_blob? $mol_blob /
+			/BlobPart <= text <= title
+			* type \text/plain
+		<= html_blob? $mol_blob /
+			/BlobPart <= html \
+			* type \text/html
+	data *
 	sub /
-		<= Icon $mol_icon_content_copy
+		<= Icon $mol_icon_clipboard_outline
+		<= title \
+
 
 $mol_text_code $mol_stack
 	attr *
@@ -165,6 +197,7 @@ $mol_text_code $mol_stack
 	text \
 	text_lines /string
 	find_pos* null
+	uri_base \
 	sub /
 		<= Rows $mol_list
 			render_visible_only <= render_visible_only false
@@ -173,10 +206,12 @@ $mol_text_code $mol_stack
 					numb_showed <= sidebar_showed
 					numb <= row_numb* 0
 					text <= row_text* \
+					syntax <= syntax null
+					uri_resolve* <= uri_resolve* \
 					highlight <= highlight \
 		<= Copy $mol_button_copy
 			hint @ \Copy whole code
-			text <= text
+			text <= text_export \
 
 $mol_hotkey $mol_plugin
 	event *
@@ -193,6 +228,8 @@ $mol_string $mol_view
 	minimal_height 40
 	autocomplete false
 	selection?val /number
+		0
+		0
 	auto /
 		<= selection_watcher null
 	field *
@@ -204,16 +241,18 @@ $mol_string $mol_view
 		autocomplete <= autocomplete_native \
 		selectionEnd <= selection_end 0
 		selectionStart <= selection_start 0
+		inputMode <= keyboard \text
+		enterkeyhint <= enter \go
 	attr *
 		^
-		maxlength <= length_max Infinity
+		maxlength <= length_max +Infinity
 		type <= type?val \text
 	event *
 		^
 		input?event <=> event_change?event null
-		keydown?event <=> event_key_press?event null
 	plugins /
 		<= Submit $mol_hotkey
+			mod_ctrl <= submit_with_ctrl false
 			key * enter?event <=> submit?event null
 
 $mol_textarea $mol_stack
@@ -229,30 +268,63 @@ $mol_textarea $mol_stack
 			value?val <=> value?val \
 			hint <= hint \ 
 			enabled <= enabled true
-			length_max <= length_max Infinity
+			spellcheck <= spellcheck true
+			length_max <= length_max +Infinity
 			selection?val <=> selection?val /number
+			bring => bring
+			submit? <=> submit? null
+			submit_with_ctrl true
 		<= View $mol_text_code
 			text <= value
 			render_visible_only false
 			row_numb* <= row_numb* 0
 			sidebar_showed <= sidebar_showed
 			highlight <= highlight \
+	symbols_alt *
+		comma \<
+		period \>
+		dash \−
+		equals \≈
+		graveAccent \́
+		forwardSlash \÷
+		E \€
+		X \×
+		C \©
+		P \§
+		H \₽
+		key0 \°
+		key8 \•
+		key2 \@
+		key3 \#
+		key4 \$
+		key6 \^
+		key7 \&
+		bracketOpen \[
+		bracketClose \]
+		slashBack \|
+	symbols_alt_shift *
+		V \✅
+		X \❌
+		O \⭕
+		key1 \❗
+		key4 \💲
+		key7 \❓
+		comma \«
+		period \»
+		semicolon \“
+		quoteSingle \”
+		dash \—
+		equals \≠
+		graveAccent \̱
+		bracketOpen \{
+		bracketClose \}
 
 $mol_textarea_edit $mol_string
 	dom_name \textarea
+	enter \enter
 	field *
 		^
 		scrollTop 0
-
-$mol_image $mol_view
-	dom_name \img
-	field *
-		^
-		src <= uri \
-		alt <= title
-		loading <= loading \eager
-	minimal_width 16
-	minimal_height 16
 
 $hyoo_meme_frame $mol_view
 	data?val *
@@ -302,6 +374,7 @@ $mol_button_download $mol_button_minor
 	file_name \blob.bin
 	sub /
 		<= Icon $mol_icon_download
+		<= title \
 
 $mol_check $mol_button_minor
 	attr *
@@ -326,11 +399,12 @@ $mol_lights_toggle $mol_check_icon
 	checked?val <=> lights?val false
 
 $mol_link $mol_view
+	uri \
 	dom_name \a
 	attr *
 		^
-		href <= uri \
-		title <= hint \
+		href <= uri_toggle \
+		title <= hint_safe <= hint \
 		target <= target \_self
 		download <= file_name \
 		mol_link_current <= current false
@@ -361,8 +435,11 @@ $hyoo_meme $mol_page
 			hint @ \Add image
 		<= Download $mol_button_download
 			file_name <= file_name \meme.png
-			uri <= download_uri \
+			blob <= export_jpg $mol_blob
 			hint @ \Download meme
+		<= Copy $mol_button_copy
+			blobs / <= export_png $mol_blob
+			hint @ \Copy meme
 		<= Lights $mol_lights_toggle
 		<= Source $mol_link_source
 			uri \https://github.com/hyoo-ru/meme.hyoo.ru/

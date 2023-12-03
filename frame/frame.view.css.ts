@@ -2,7 +2,7 @@ namespace $.$$ {
 	
 	const { per, rem, vw } = $mol_style_unit
 	const { clamp, hsla } = $mol_style_func
-	
+
 	$mol_style_define( $hyoo_meme_frame, {
 		
 		position: 'relative',

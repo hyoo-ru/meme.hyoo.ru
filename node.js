@@ -7382,6 +7382,7 @@ var $;
                 flex: {
                     grow: 1,
                 },
+                width: `100%`,
             },
             Before: {
                 top: 0,

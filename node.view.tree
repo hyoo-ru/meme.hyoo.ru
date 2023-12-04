@@ -1,6 +1,17 @@
+$mol_list $mol_view
+	render_visible_only true
+	render_over 0
+	sub <= rows /$mol_view
+	Empty $mol_view
+	Gap_before $mol_view style * paddingTop <= gap_before 0
+	Gap_after $mol_view style * paddingTop <= gap_after 0
+	view_window /
+		0
+		0
+
 $mol_scroll $mol_view
-	scroll_top?val 0
-	scroll_left?val 0
+	scroll_top? 0
+	scroll_left? 0
 	field *
 		^
 		tabIndex <= tabindex -1
@@ -26,8 +37,10 @@ $mol_page $mol_view
 				<= Tools $mol_view
 					sub <= tools /$mol_view_content
 		<= Body $mol_scroll
-			scroll_top?val => body_scroll_top?val
-			sub <= body /$mol_view_content
+			scroll_top? => body_scroll_top?
+			sub <= body_content /
+				<= Body_content $mol_list
+					rows <= body /$mol_view
 		<= Foot $mol_view
 			dom_name \footer
 			sub <= foot /$mol_view
@@ -41,6 +54,12 @@ $mol_image $mol_view
 		loading <= loading \eager
 		decoding <= decoding \async
 		crossOrigin <= cors null
+	attr *
+		^
+		width <= natural_width? 0
+		height <= natural_height? 0
+	event *
+		load? <=> load? null
 	minimal_width 16
 	minimal_height 16
 
@@ -95,17 +114,6 @@ $mol_text_code_row $mol_paragraph
 		needle <= highlight \
 		uri <= token_uri* \
 	find_pos* null
-
-$mol_list $mol_view
-	render_visible_only true
-	render_over 0
-	sub <= rows /$mol_view
-	Empty $mol_view
-	Gap_before $mol_view style * paddingTop <= gap_before 0
-	Gap_after $mol_view style * paddingTop <= gap_after 0
-	view_window /
-		0
-		0
 
 $mol_speck $mol_view
 	attr *
@@ -227,15 +235,16 @@ $mol_string $mol_view
 	enabled true
 	minimal_height 40
 	autocomplete false
-	selection?val /number
+	selection? /number
 		0
 		0
 	auto /
 		<= selection_watcher null
+		<= error_report null
 	field *
 		^
 		disabled <= disabled false
-		value <= value_changed?val <=> value?val \
+		value <= value_changed? <=> value? \
 		placeholder <= hint_visible <= hint \
 		spellcheck <= spellcheck true
 		autocomplete <= autocomplete_native \
@@ -246,7 +255,7 @@ $mol_string $mol_view
 	attr *
 		^
 		maxlength <= length_max +Infinity
-		type <= type?val \text
+		type <= type? \text
 	event *
 		^
 		input?event <=> event_change?event null
@@ -258,22 +267,22 @@ $mol_string $mol_view
 $mol_textarea $mol_stack
 	attr *
 		^
-		mol_textarea_clickable <= clickable?val false
+		mol_textarea_clickable <= clickable? false
 		mol_textarea_sidebar_showed <= sidebar_showed false
 	event *
 		keydown?event <=> press?event null
 		pointermove?event <=> hover?event null
 	sub /
 		<= Edit $mol_textarea_edit
-			value?val <=> value?val \
+			value? <=> value? \
 			hint <= hint \ 
 			enabled <= enabled true
 			spellcheck <= spellcheck true
 			length_max <= length_max +Infinity
-			selection?val <=> selection?val /number
+			selection? <=> selection? /number
 			bring => bring
 			submit? <=> submit? null
-			submit_with_ctrl true
+			submit_with_ctrl <= submit_with_ctrl true
 		<= View $mol_text_code
 			text <= value
 			render_visible_only false
@@ -288,6 +297,7 @@ $mol_textarea $mol_stack
 		graveAccent \́
 		forwardSlash \÷
 		E \€
+		V \✔
 		X \×
 		C \©
 		P \§
@@ -302,6 +312,8 @@ $mol_textarea $mol_stack
 		bracketOpen \[
 		bracketClose \]
 		slashBack \|
+	symbols_alt_ctrl *
+		space \ 
 	symbols_alt_shift *
 		V \✅
 		X \❌
@@ -379,9 +391,9 @@ $mol_button_download $mol_button_minor
 $mol_check $mol_button_minor
 	attr *
 		^
-		mol_check_checked <= checked?val false
-		aria-checked <= checked?val false
-		role \checkbox
+		mol_check_checked <= checked? false
+		aria-checked <= aria_checked \false
+		role <= aria_role \checkbox
 	sub /$mol_view_content
 		<= Icon null
 		<= label /
@@ -396,11 +408,14 @@ $mol_icon_brightness_6 $mol_icon path \M12,18V6C15.31,6 18,8.69 18,12C18,15.31 1
 $mol_lights_toggle $mol_check_icon
 	Icon <= Lights_icon $mol_icon_brightness_6
 	hint @ \Toggle lights
-	checked?val <=> lights?val false
+	checked? <=> lights? false
 
 $mol_link $mol_view
 	uri \
 	dom_name \a
+	uri_off \
+	uri_native null
+	external false
 	attr *
 		^
 		href <= uri_toggle \

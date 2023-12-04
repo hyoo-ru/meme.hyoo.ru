@@ -70,6 +70,7 @@ namespace $.$$ {
 			flex: {
 				grow: 1,
 			},
+			width: `100%`,
 		},
 		
 		Before: {

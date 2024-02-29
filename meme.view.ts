@@ -34,6 +34,11 @@ namespace $.$$ {
 			return super.title()
 		}
 		
+		paste( event: ClipboardEvent ) {
+			const files = [ ... event.clipboardData!.files ]
+			$mol_wire_async( this ).add( files )
+		}
+		
 		add( files: readonly File[] ) {
 			
 			this.data([

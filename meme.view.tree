@@ -3,6 +3,9 @@ $hyoo_meme $mol_page
 	data /
 	plugins /
 		<= Theme $mol_theme_auto
+	event *
+		^
+		paste? <=> paste? null
 	tools /
 		<= Add $mol_button_open
 			files?val <=> add?val /

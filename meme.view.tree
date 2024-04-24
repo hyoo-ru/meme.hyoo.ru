@@ -32,4 +32,4 @@ $hyoo_meme $mol_page
 			<= Frame_drop!index $mol_button_minor
 				click?event <=> frame_drop!index?event null
 				sub /
-					<= Frame_drop_icon!index $mol_icon_cross
+					<= Frame_drop_icon!index $mol_icon_close

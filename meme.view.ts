@@ -43,7 +43,9 @@ namespace $.$$ {
 			
 			this.data([
 				... this.data(),
-				... [ ... files ].map( file => ({
+				... [ ... files ]
+				.map( file => $mol_picture.fit( file, 800 ).format("image/webp" )! )
+				.map( file => ({
 					back: $mol_wire_sync( this as $hyoo_meme ).load_file( file ),
 					before: '',
 					inside: '',

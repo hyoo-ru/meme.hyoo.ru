@@ -1057,6 +1057,7 @@ declare namespace $ {
         static make_link(next: {
             [key: string]: string | null;
         }): string;
+        static commit(): void;
         static go(next: {
             [key: string]: string | null;
         }): void;

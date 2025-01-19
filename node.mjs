@@ -3910,6 +3910,7 @@ var $;
         static go(next) {
             this.href(this.link(next));
         }
+        static commit() { }
         constructor(prefix = '') {
             super();
             this.prefix = prefix;

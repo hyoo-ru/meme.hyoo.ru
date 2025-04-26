@@ -3009,27 +3009,32 @@ declare namespace $ {
 		,
 		ReturnType< $mol_link_source['uri'] >
 	>
-	type $mol_list__rows_hyoo_meme_9 = $mol_type_enforce<
+	type $mol_view__sub_hyoo_meme_9 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_view['sub'] >
+	>
+	type $mol_list__rows_hyoo_meme_10 = $mol_type_enforce<
 		ReturnType< $hyoo_meme['frames'] >
 		,
 		ReturnType< $mol_list['rows'] >
 	>
-	type $mol_button_minor__click_hyoo_meme_10 = $mol_type_enforce<
+	type $mol_button_minor__click_hyoo_meme_11 = $mol_type_enforce<
 		ReturnType< $hyoo_meme['frame_drop'] >
 		,
 		ReturnType< $mol_button_minor['click'] >
 	>
-	type $mol_button_minor__sub_hyoo_meme_11 = $mol_type_enforce<
+	type $mol_button_minor__sub_hyoo_meme_12 = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $mol_button_minor['sub'] >
 	>
-	type $hyoo_meme_frame__data_hyoo_meme_12 = $mol_type_enforce<
+	type $hyoo_meme_frame__data_hyoo_meme_13 = $mol_type_enforce<
 		ReturnType< $hyoo_meme['frame_data'] >
 		,
 		ReturnType< $hyoo_meme_frame['data'] >
 	>
-	type $hyoo_meme_frame__tools_hyoo_meme_13 = $mol_type_enforce<
+	type $hyoo_meme_frame__tools_hyoo_meme_14 = $mol_type_enforce<
 		ReturnType< $hyoo_meme['frame_tools'] >
 		,
 		ReturnType< $hyoo_meme_frame['tools'] >
@@ -3046,6 +3051,7 @@ declare namespace $ {
 		Copy( ): $mol_button_copy
 		Lights( ): $mol_lights_toggle
 		Source( ): $mol_link_source
+		Ref( ): $mol_view
 		frames( ): readonly(any)[]
 		Frames( ): $mol_list
 		frame_data( id: any, next?: ({ 
@@ -3090,7 +3096,7 @@ declare namespace $.$$ {
         title(): string;
         paste(event: ClipboardEvent): void;
         add(files: readonly File[]): readonly File[];
-        frames(): $.$hyoo_meme_frame[];
+        frames(): any[];
         frame_data(index: number, next?: Frame_data | null): {
             back: string;
             before: string;

@@ -8545,8 +8545,13 @@ var $;
 			(obj.uri) = () => ("https://github.com/hyoo-ru/meme.hyoo.ru/");
 			return obj;
 		}
+		Ref(){
+			const obj = new this.$.$mol_view();
+			(obj.sub) = () => (["meme.hyoo.ru"]);
+			return obj;
+		}
 		frames(){
-			return [];
+			return [(this.Ref())];
 		}
 		Frames(){
 			const obj = new this.$.$mol_list();
@@ -8620,6 +8625,7 @@ var $;
 	($mol_mem(($.$hyoo_meme.prototype), "Copy"));
 	($mol_mem(($.$hyoo_meme.prototype), "Lights"));
 	($mol_mem(($.$hyoo_meme.prototype), "Source"));
+	($mol_mem(($.$hyoo_meme.prototype), "Ref"));
 	($mol_mem(($.$hyoo_meme.prototype), "Frames"));
 	($mol_mem_key(($.$hyoo_meme.prototype), "frame_data"));
 	($mol_mem_key(($.$hyoo_meme.prototype), "frame_drop"));
@@ -8873,7 +8879,10 @@ var $;
                 return files;
             }
             frames() {
-                return this.data().map((_, i) => this.Frame(i));
+                return [
+                    ...this.data().map((_, i) => this.Frame(i)),
+                    ...super.frames(),
+                ];
             }
             frame_data(index, next) {
                 const arg = next === undefined ? undefined : [
@@ -8937,7 +8946,9 @@ var $;
                 padding: 0,
             },
             Frames: {
-                alignSelf: 'center',
+                align: {
+                    self: 'center',
+                },
                 padding: $mol_gap.block,
                 background: {
                     color: $mol_theme.back,
@@ -8945,6 +8956,13 @@ var $;
             },
             Frame: {
                 margin: $mol_gap.block,
+            },
+            Ref: {
+                align: {
+                    self: 'center',
+                },
+                margin: [`-.75rem`, 0],
+                color: $mol_theme.shade,
             },
         });
     })($$ = $.$$ || ($.$$ = {}));

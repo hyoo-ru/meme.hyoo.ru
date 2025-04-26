@@ -7,11 +7,10 @@ namespace $.$$ {
 		},
 		
 		Frames: {
-			alignSelf: 'center',
+			align: {
+				self: 'center',
+			},
 			padding: $mol_gap.block,
-			// border: {
-			// 	radius: $mol_gap.round,
-			// },
 			background: {
 				color: $mol_theme.back,
 			},
@@ -19,6 +18,14 @@ namespace $.$$ {
 		
 		Frame: {
 			margin: $mol_gap.block,
+		},
+		
+		Ref: {
+			align: {
+				self: 'center',
+			},
+			margin: [ `-.75rem`, 0 ],
+			color: $mol_theme.shade,
 		},
 		
 	} )

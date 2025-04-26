@@ -21,15 +21,17 @@ $hyoo_meme $mol_page
 		<= Source $mol_link_source
 			uri \https://github.com/hyoo-ru/meme.hyoo.ru/
 	body /
-		<= Frames $mol_list rows <= frames /
-	Frame!index $hyoo_meme_frame
-		data?val <=> frame_data!index?val *
+		<= Frames $mol_list
+			rows <= frames /
+				<= Ref $mol_view sub / \meme.hyoo.ru
+	Frame* $hyoo_meme_frame
+		data?val <=> frame_data*?val *
 			back \about:blank
 			before \
 			inside \
 			after \
-		tools <= frame_tools!index /
-			<= Frame_drop!index $mol_button_minor
-				click?event <=> frame_drop!index?event null
+		tools <= frame_tools* /
+			<= Frame_drop* $mol_button_minor
+				click? <=> frame_drop*? null
 				sub /
-					<= Frame_drop_icon!index $mol_icon_close
+					<= Frame_drop_icon* $mol_icon_close

@@ -56,7 +56,10 @@ namespace $.$$ {
 		
 		@ $mol_mem
 		frames() {
-			return this.data().map( ( _, i )=> this.Frame( i ) )
+			return [
+				... this.data().map( ( _, i )=> this.Frame( i ) ),
+				... super.frames(),
+			]
 		}
 		
 		frame_data( index: number, next?: Frame_data | null ) {

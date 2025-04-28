@@ -8521,9 +8521,8 @@ var $;
                 padding: 0,
             },
             Frames: {
-                align: {
-                    self: 'center',
-                },
+                margin: 'auto',
+                maxWidth: 'auto',
                 padding: $mol_gap.block,
                 background: {
                     color: $mol_theme.back,

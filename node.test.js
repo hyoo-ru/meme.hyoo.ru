@@ -8424,7 +8424,7 @@ var $;
         const { hsla } = $mol_style_func;
         $mol_style_define($hyoo_meme_frame, {
             position: 'relative',
-            width: '40rem',
+            width: '50rem',
             flex: {
                 direction: 'column',
             },

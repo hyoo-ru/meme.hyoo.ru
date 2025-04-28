@@ -8955,7 +8955,7 @@ var $;
             },
             Frames: {
                 margin: 'auto',
-                maxWidth: 'auto',
+                maxWidth: 'none',
                 padding: $mol_gap.block,
                 background: {
                     color: $mol_theme.back,

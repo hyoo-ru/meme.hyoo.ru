@@ -7,9 +7,8 @@ namespace $.$$ {
 		},
 		
 		Frames: {
-			align: {
-				self: 'center',
-			},
+			margin: 'auto',
+			maxWidth: 'auto',
 			padding: $mol_gap.block,
 			background: {
 				color: $mol_theme.back,

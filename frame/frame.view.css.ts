@@ -1,12 +1,11 @@
 namespace $.$$ {
 	
-	const { per, rem, vw } = $mol_style_unit
-	const { clamp, hsla } = $mol_style_func
+	const { hsla } = $mol_style_func
 	
 	$mol_style_define( $hyoo_meme_frame, {
 		
 		position: 'relative',
-		maxWidth: rem(50),
+		width: '40rem',
 		flex: {
 			direction: 'column',
 		},
@@ -18,11 +17,11 @@ namespace $.$$ {
 			color: 'white',
 			font: {
 				weight: 'bolder',
-				size: clamp( rem(0), vw(4), rem(2) ),
+				size: '2em',
 			},			
 			textAlign: 'center',
 			position: 'absolute',
-			width: per(100),
+			width: '100%',
 			
 			$mol_string: {
 				
@@ -59,7 +58,7 @@ namespace $.$$ {
 			
 			position: 'absolute',
 			top: 0,
-			right: rem(-3.5),
+			right: '-3.5rem',
 			flex: {
 				direction: 'column',
 			},
@@ -78,7 +77,7 @@ namespace $.$$ {
 		},
 		
 		Inside: {
-			top: per(50),
+			top: '50%',
 			transform: 'translateY(-50%)',
 		},
 		

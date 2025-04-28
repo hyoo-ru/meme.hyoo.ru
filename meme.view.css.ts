@@ -2,7 +2,7 @@ namespace $.$$ {
 	
 	$mol_style_define( $hyoo_meme, {
 		
-		Body: {
+		Body_content: {
 			padding: 0,
 		},
 		

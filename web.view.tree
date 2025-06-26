@@ -35,7 +35,8 @@ $mol_page $mol_view
 			sub <= foot /$mol_view
 
 $mol_theme_auto $mol_plugin
-	attr * mol_theme <= theme \
+	light \$mol_theme_light
+	attr * mol_theme <= theme <= dark \$mol_theme_dark
 
 $mol_speck $mol_view
 	minimal_width 12

@@ -146,7 +146,6 @@ $mol_button_copy $mol_button_minor
 		<= Icon $mol_icon_clipboard_outline
 		<= title \
 
-
 $mol_check $mol_button_minor
 	attr *
 		^

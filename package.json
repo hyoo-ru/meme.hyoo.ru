@@ -209,6 +209,7 @@
     "$mol_syntax2_md",
     "$mol_string",
     "$mol_hotkey",
+    "$mol_hotkey2",
     "$mol_picture",
     "$mol_dom_capture",
     "$mol_dom_serialize",
